@@ -3,9 +3,16 @@ const { apiRouter } = require("./routes");
 const { connectDB } = require("./config/db");
 const cookieParser = require("cookie-parser");
 const { handleError } = require("./utils/error");
+const cors = require("cors");
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+app.use(
+  cors({
+    origin: "http://localhost:3459",
+    credentials: true,
+  })
+);
 const port = 3000;
 
 connectDB();

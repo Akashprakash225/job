@@ -14,6 +14,7 @@ const createJob = async (req, res, next) => {
       experienceRequired,
       salaryRange,
       applicationDeadline,
+      description,
     } = req.body;
     let companyLogoUrl;
     if (
@@ -24,7 +25,8 @@ const createJob = async (req, res, next) => {
       !requirements ||
       !experienceRequired ||
       !salaryRange ||
-      !applicationDeadline
+      !applicationDeadline ||
+      !description
     ) {
       return res.status(400).json({ message: "All fields required" });
     }
@@ -45,6 +47,7 @@ const createJob = async (req, res, next) => {
       experienceRequired,
       salaryRange,
       applicationDeadline,
+      description,
       companyLogo: companyLogoUrl && companyLogoUrl,
     });
     if (user.role === "employer") newJob.employer = user.id;
@@ -70,6 +73,7 @@ const updateJob = async (req, res, next) => {
       experienceRequired,
       salaryRange,
       applicationDeadline,
+      description,
       companyLogo,
     } = req.body;
     let imageUrl;
@@ -92,6 +96,7 @@ const updateJob = async (req, res, next) => {
         salaryRange,
         applicationDeadline,
         companyLogo,
+        description,
       },
       { new: true }
     );
@@ -119,4 +124,29 @@ const deleteJob = async (req, res, next) => {
     return next(error);
   }
 };
-module.exports = { createJob, updateJob, deleteJob };
+const JobList = async (req, res, next) => {
+  try {
+    const jobs = await Job.find().populate("employer", "name");
+    if (!jobs.length) {
+      return res.status(404).json({ message: "No jobs found" });
+    }
+    return res.status(200).json({
+      success: true,
+      data: jobs,
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+const JobDetails = async (req, res, next) => {
+  const { jobId } = req.params;
+  try {
+    const jobDetail = await Job.findById(jobId).populate("employer");
+    res
+      .status(200)
+      .json({ success: true, message: "job fetched", data: jobDetail });
+  } catch (error) {
+    return next(error);
+  }
+};
+module.exports = { createJob, updateJob, deleteJob, JobList, JobDetails };
