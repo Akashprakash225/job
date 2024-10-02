@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Footer = () => {
+export const EmployerFooter = () => {
   return (
     <footer className="footer footer-center bg-base-200 text-base-content rounded p-10">
       <nav className="grid grid-flow-col gap-4">
-        <Link className="link link-hover" to={"/employer/login"}>
-          Employer Login
+        <Link className="link link-hover" to={"/"}>
+          Home
         </Link>
       </nav>
       <nav>
@@ -52,5 +52,3 @@ const Footer = () => {
     </footer>
   );
 };
-
-export default Footer;

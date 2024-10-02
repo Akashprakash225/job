@@ -4,19 +4,30 @@ import { useForm } from "react-hook-form";
 import { axiosInstance } from "../config/AxiosInstances";
 import toast from "react-hot-toast";
 
-const Login = () => {
+const Login = ({ role = "user" }) => {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
+  const user = {
+    login_api: "/user/login",
+    profile_route: "/user/profile",
+    signup_route: "/signup",
+  };
+  if (role === "employer") {
+    (user.login_api = "/employer/login"),
+      (user.profile_route = "/employer/profile"),
+      (user.signup_route = "/employer/signup");
+  }
+
   const onSubmit = async (data) => {
     try {
       const response = await axiosInstance({
         method: "POST",
-        url: "/user/login",
+        url: user.login_api,
         data,
       });
       console.log(response, "======response");
       toast.success("Login Success");
-      navigate("/user/profile");
+      navigate(user.profile_route);
     } catch (error) {
       toast.error("Login Failed");
       console.log(error);
@@ -27,7 +38,10 @@ const Login = () => {
     <div className="hero bg-base-200 min-h-screen">
       <div className="hero-content flex-col lg:flex-row-reverse">
         <div className="text-center lg:text-left">
-          <h1 className="text-5xl font-bold">Login now!</h1>
+          <h1 className="text-5xl font-bold">
+            {" "}
+            Login now{role === "employer" && " as Employer"}!
+          </h1>
           <p className="py-6">
             Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
             excepturi exercitationem quasi. In deleniti eaque aut repudiandae et
@@ -60,7 +74,7 @@ const Login = () => {
                 required
               />
               <label className="label">
-                <Link to={"/signup"}>New User ?</Link>
+                <Link to={user.signup_route}>New User ?</Link>
               </label>
             </div>
             <div className="form-control mt-6">

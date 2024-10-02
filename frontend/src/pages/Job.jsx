@@ -21,7 +21,6 @@ const Job = () => {
   }, []);
   return (
     <div>
-      <h1>Job List</h1>
       <div className=" grid grid-cols-3   ">
         {data.map((value) => (
           <JobCards job={value} key={value?._id} />

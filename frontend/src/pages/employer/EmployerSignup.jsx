@@ -1,10 +1,10 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { axiosInstance } from "../config/AxiosInstances";
 import toast from "react-hot-toast";
+import { axiosInstance } from "../../config/AxiosInstances";
 
-const Signup = () => {
+export const EmployerSignup = () => {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
 
@@ -12,7 +12,7 @@ const Signup = () => {
     try {
       const response = await axiosInstance({
         method: "POST",
-        url: "/user/signup",
+        url: "/employer/signup",
         data,
       });
       console.log(response, "======response");
@@ -39,12 +39,12 @@ const Signup = () => {
           <form className="card-body" onSubmit={handleSubmit(onSubmit)}>
             <div className="form-control">
               <label className="label">
-                <span className="label-text">Name</span>
+                <span className="label-text">Company Name</span>
               </label>
               <input
                 type="text"
-                placeholder="Name"
-                {...register("name", { required: true })}
+                {...register("companyName")}
+                placeholder="Company Name"
                 className="input input-bordered"
                 required
               />
@@ -55,36 +55,52 @@ const Signup = () => {
               </label>
               <input
                 type="email"
+                {...register("email")}
                 placeholder="Email"
-                {...register("email", { required: true })}
                 className="input input-bordered"
                 required
               />
             </div>
+
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Password</span>
               </label>
               <input
                 type="password"
+                {...register("password")}
                 placeholder="Password"
-                {...register("password", { required: true })}
                 className="input input-bordered"
                 required
               />
             </div>
+
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Phone</span>
               </label>
               <input
                 type="tel"
+                {...register("phone")}
                 placeholder="Number"
-                {...register("phone", { required: true })}
                 className="input input-bordered"
                 required
               />
             </div>
+
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Location</span>{" "}
+              </label>
+              <input
+                type="text"
+                {...register("location")}
+                placeholder="Location"
+                className="input input-bordered"
+                required
+              />
+            </div>
+
             <label className="label">
               <Link to={"/login"}>Existing User?</Link>
             </label>
@@ -97,5 +113,3 @@ const Signup = () => {
     </div>
   );
 };
-
-export default Signup;

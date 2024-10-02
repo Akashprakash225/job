@@ -16,7 +16,7 @@ const createJob = async (req, res, next) => {
       applicationDeadline,
       description,
     } = req.body;
-    let companyLogoUrl;
+    let jobImageUrl;
     if (
       !title ||
       !company ||
@@ -30,12 +30,12 @@ const createJob = async (req, res, next) => {
     ) {
       return res.status(400).json({ message: "All fields required" });
     }
-    const isJobExist = await Job.findOne({ title });
-    if (isJobExist) {
-      return res.status(400).json({ message: "Job already exist" });
-    }
+    // const isJobExist = await Job.findOne({ title });
+    // if (isJobExist) {
+    //   return res.status(400).json({ message: "Job already exist" });
+    // }
     if (req.file) {
-      companyLogoUrl = await handleImageUpload(req.file.path);
+      jobImageUrl = await handleImageUpload(req.file.path);
     }
 
     const newJob = new Job({
@@ -48,7 +48,7 @@ const createJob = async (req, res, next) => {
       salaryRange,
       applicationDeadline,
       description,
-      companyLogo: companyLogoUrl && companyLogoUrl,
+      jobImage: jobImageUrl && jobImageUrl,
     });
     if (user.role === "employer") newJob.employer = user.id;
     await newJob.save();
@@ -74,7 +74,7 @@ const updateJob = async (req, res, next) => {
       salaryRange,
       applicationDeadline,
       description,
-      companyLogo,
+      jobImage,
     } = req.body;
     let imageUrl;
     const isJobExist = await Job.findOne({ _id: jobId });
@@ -95,7 +95,7 @@ const updateJob = async (req, res, next) => {
         experienceRequired,
         salaryRange,
         applicationDeadline,
-        companyLogo,
+        jobImage,
         description,
       },
       { new: true }

@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.put("/add-to-savedjob", userAuth, addToSavedJob);
 
-router.get("/savedjobs", userAuth, getSavedJobs);
+router.get("/", userAuth, getSavedJobs);
 
 router.delete("/remove-savedjob/:jobId", userAuth, removeSavedJob);
 

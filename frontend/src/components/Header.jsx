@@ -14,7 +14,7 @@ const Header = () => {
       <nav className="flex gap-16 items-center font-semibold">
         <Link to={"/"}>Home</Link>
         <Link to={"/companies"}>Companies</Link>
-        <Link to={"/job"}>job</Link>
+        <Link to={"/job"}>Jobs</Link>
       </nav>
       <div className="flex items-center  space-x-10">
         <DarkMode />

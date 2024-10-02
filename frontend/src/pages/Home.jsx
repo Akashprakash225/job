@@ -1,7 +1,26 @@
 import React from "react";
 import Search from "../components/Search";
+import JobCards from "../components/Cards";
+import { useEffect, useState } from "react";
+import { axiosInstance } from "../config/AxiosInstances";
 
 const Home = () => {
+  const [data, setData] = useState([]);
+  const fetchJob = async () => {
+    try {
+      const response = await axiosInstance({
+        method: "GET",
+        url: "/jobs/jobList",
+      });
+      setData(response?.data?.data);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchJob();
+  }, []);
   return (
     <div className="">
       <main className="min-h-96">
@@ -10,7 +29,14 @@ const Home = () => {
             Discover your perfect career today
           </h1>
         </div>
-        <Search />
+        <div className="mb-5">
+          <Search />
+        </div>
+        <div className="grid grid-cols-3">
+          {data.map((value) => (
+            <JobCards job={value} key={value?._id} />
+          ))}
+        </div>
       </main>
     </div>
   );

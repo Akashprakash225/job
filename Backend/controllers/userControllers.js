@@ -122,13 +122,14 @@ const checkUser = async (req, res) => {
 const userUpdate = async (req, res, next) => {
   try {
     const { id: userId } = req.user;
-
-    const { name, email, phone, experience, resume, profilePic } = req.body;
+    const { name, email, phone, experience } = req.body;
+    const profilePic = req.file;
     if (!userId) {
       return res
         .status(400)
         .json({ success: false, message: "User ID is required" });
     }
+
     const user = await User.findById(userId);
 
     if (!user) {
@@ -136,12 +137,17 @@ const userUpdate = async (req, res, next) => {
         .status(404)
         .json({ success: false, message: "User not found" });
     }
+
     if (name) user.name = name;
     if (email) user.email = email;
     if (phone) user.phone = phone;
     if (experience) user.experience = experience;
-    if (resume) user.resume = resume;
-    if (profilePic) user.profilePic = profilePic;
+
+    if (profilePic) {
+      const profilePicUrl = await handleImageUpload(profilePic.path);
+      user.profilePic = profilePicUrl;
+    }
+
     await user.save();
     res.status(200).json({
       success: true,
@@ -149,13 +155,12 @@ const userUpdate = async (req, res, next) => {
       data: user,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res
       .status(error.statusCode || 500)
       .json({ message: error.message || "Internal server error" });
   }
 };
-
 module.exports = {
   userSignup,
   userLogin,

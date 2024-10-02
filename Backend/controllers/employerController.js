@@ -1,6 +1,7 @@
 const { employer, Employer } = require("../models/employerModel");
 const bcrypt = require("bcrypt");
 const { generateToken } = require("../utils/token");
+const { handleImageUpload } = require("../utils/imageUpload");
 const employerSignup = async (req, res) => {
   try {
     const {
@@ -14,6 +15,7 @@ const employerSignup = async (req, res) => {
       location,
       description,
     } = req.body;
+    let companyLogoUrl = null;
     if (!companyName || !email || !password || !phone) {
       return res
         .status(400)
@@ -25,13 +27,17 @@ const employerSignup = async (req, res) => {
     }
     const saltRounds = 10;
     const hashedPassword = bcrypt.hashSync(password, saltRounds);
-
+    if (req.files) {
+      if (req.files.companyLogo) {
+        companyLogoUrl = await handleImageUpload(req.files.companyLogo[0].path);
+      }
+    }
     const newEmployer = new Employer({
       companyName,
       email,
       password: hashedPassword,
       phone,
-      companyLogo,
+      companyLogo: companyLogoUrl,
       location,
       description,
       companyWebsite,
@@ -122,46 +128,64 @@ const checkEmployer = async (req, res) => {
 const employerUpdate = async (req, res, next) => {
   try {
     const { id: employerId } = req.user;
+    const { companyName, email, phone, companyWebsite, location, description } =
+      req.body;
+    const companyLogo = req.file;
 
-    const {
-      companyName,
-      email,
-      phone,
-      companyWebsite,
-      companyLogo,
-      location,
-      description,
-    } = req.body;
     if (!employerId) {
       return res
         .status(400)
-        .json({ success: false, message: "User ID is required" });
+        .json({ success: false, message: "Employer ID is required" });
     }
-    const user = await Employer.findById(employerId);
 
-    if (!user) {
+    const employer = await Employer.findById(employerId);
+
+    if (!employer) {
       return res
         .status(404)
-        .json({ success: false, message: "User not found" });
+        .json({ success: false, message: "Employer not found" });
     }
-    if (companyName) user.companyName = companyName;
-    if (email) user.email = email;
-    if (phone) user.phone = phone;
-    if (companyWebsite) user.companyWebsite = companyWebsite;
-    if (companyLogo) user.companyLogo = companyLogo;
-    if (location) user.location = location;
-    if (description) user.description = description;
-    await user.save();
+
+    if (companyName) employer.companyName = companyName;
+    if (email) employer.email = email;
+    if (phone) employer.phone = phone;
+    if (companyWebsite) employer.companyWebsite = companyWebsite;
+    if (location) employer.location = location;
+    if (description) employer.description = description;
+
+    if (companyLogo) {
+      const companyLogoUrl = await handleImageUpload(companyLogo.path);
+      employer.companyLogo = companyLogoUrl;
+    }
+
+    await employer.save();
     res.status(200).json({
       success: true,
-      message: "User updated successfully",
-      data: user,
+      message: "Employer updated successfully",
+      data: employer,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res
       .status(error.statusCode || 500)
       .json({ message: error.message || "Internal server error" });
+  }
+};
+const companyList = async (req, res, next) => {
+  try {
+    const employer = await Employer.find().populate(
+      "jobsPosted.jobId",
+      "companyName"
+    );
+    if (!employer.length) {
+      return res.status(404).json({ message: "No jobs found" });
+    }
+    return res.status(200).json({
+      success: true,
+      data: employer,
+    });
+  } catch (error) {
+    return next(error);
   }
 };
 
@@ -172,4 +196,5 @@ module.exports = {
   employerProfile,
   checkEmployer,
   employerUpdate,
+  companyList,
 };

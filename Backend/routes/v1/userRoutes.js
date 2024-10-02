@@ -22,7 +22,7 @@ router.post(
 router.post("/login", userLogin);
 router.post("/logout", userLogout);
 router.get("/profile", userAuth, userProfile);
-router.put("/update", userAuth, userUpdate);
+router.put("/update", userAuth, upload.single("profilePic"), userUpdate);
 router.delete("/delete");
 
 router.get("/userList");

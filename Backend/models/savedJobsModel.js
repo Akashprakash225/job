@@ -6,11 +6,13 @@ const savedJobSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  job: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Job",
-    required: true,
-  },
+  job: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Job",
+      required: true,
+    },
+  ],
   savedAt: {
     type: Date,
     default: Date.now,
