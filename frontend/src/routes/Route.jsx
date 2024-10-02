@@ -1,5 +1,4 @@
 import { createBrowserRouter } from "react-router-dom";
-import Home from "../pages/home";
 import About from "../pages/About";
 import Job from "../pages/Job";
 import Login from "../pages/Login";
@@ -9,7 +8,7 @@ import Companies from "../pages/Companies";
 import UserLayout from "../layout/UserLayout";
 import AuthUser from "./protectedRoutes/AuthUser";
 import { Profile } from "../pages/user/Profile";
-import { ErrorPage } from "../components/errorPage";
+import { ErrorPage } from "../components/ErrorPage";
 import { SavedJobs } from "../components/user/SavedJobs";
 import { EmployerLayout } from "../layout/EmployerLayout";
 import { EmployerProfilePage } from "../pages/employer/EmployerProfilePage";
@@ -18,6 +17,7 @@ import { EmployersNewJob } from "../pages/employer/EmployersNewJob";
 import AuthEmployer from "./protectedRoutes/AuthEmployer";
 import { EmployerSignup } from "../pages/employer/EmployerSignup";
 import { UserProfileEdit } from "../pages/user/userProfileEdit";
+import Home from "../pages/Home";
 
 export const router = createBrowserRouter([
   {
