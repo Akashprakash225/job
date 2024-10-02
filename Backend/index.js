@@ -11,6 +11,7 @@ app.use(
   cors({
     origin: ["http://localhost:3459", "https://job-gn29.vercel.app"],
     credentials: true,
+    methods: ["POST", "GET", "DELETE", "UPDATE", "PUT", "OPTION"],
   })
 );
 const port = 3000;
