@@ -16,7 +16,7 @@ import { EmployersJob } from "../pages/employer/EmployersJob";
 import { EmployersNewJob } from "../pages/employer/EmployersNewJob";
 import AuthEmployer from "./protectedRoutes/AuthEmployer";
 import { EmployerSignup } from "../pages/employer/EmployerSignup";
-import { UserProfileEdit } from "../pages/user/userProfileEdit";
+import { UserProfileEdit } from "../pages/user/UserProfileEdit";
 import Home from "../pages/Home";
 
 export const router = createBrowserRouter([
