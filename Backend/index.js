@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:3459",
+    origin: ["http://localhost:3459", "https://job-gn29.vercel.app"],
     credentials: true,
   })
 );
