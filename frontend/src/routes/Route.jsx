@@ -11,7 +11,6 @@ import AuthUser from "./protectedRoutes/AuthUser";
 import { Profile } from "../pages/user/Profile";
 import { ErrorPage } from "../components/errorPage";
 import { SavedJobs } from "../components/user/SavedJobs";
-import { Heading1Icon, Heading2, LucideHeading1 } from "lucide-react";
 import { EmployerLayout } from "../layout/EmployerLayout";
 import { EmployerProfilePage } from "../pages/employer/EmployerProfilePage";
 import { EmployersJob } from "../pages/employer/EmployersJob";
