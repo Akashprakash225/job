@@ -27,6 +27,7 @@ export const Profile = () => {
       });
       toast.success("Logout Sucessfull");
       navigate("/");
+      window.location.reload();
     } catch (error) {
       console.log(error);
       toast.success("Logout Failed");

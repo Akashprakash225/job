@@ -1,4 +1,3 @@
-// SavedJobs.jsx
 import React, { useEffect, useState } from "react";
 import { axiosInstance } from "../../config/AxiosInstances";
 import { SavedCards } from "../Cards";
@@ -43,6 +42,10 @@ export const SavedJobs = () => {
     fetchSavedItems();
   }, []);
 
+  const refreshSavedJobs = () => {
+    fetchSavedItems();
+  };
+
   if (loading) {
     return <p>Loading saved jobs...</p>;
   }
@@ -58,7 +61,11 @@ export const SavedJobs = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {savedItems.map((value) =>
             value && value._id ? (
-              <SavedCards items={value} key={value._id} />
+              <SavedCards
+                items={value}
+                key={value._id}
+                refreshSavedJobs={refreshSavedJobs}
+              />
             ) : null
           )}
         </div>

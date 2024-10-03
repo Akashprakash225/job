@@ -25,6 +25,7 @@ export const EmployerProfilePage = () => {
         url: "/employer/logout",
       });
       navigate("/");
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
