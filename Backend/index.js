@@ -12,7 +12,6 @@ app.use(
     origin: ["http://localhost:3459", "https://job-frontend-two.vercel.app"],
     credentials: true,
     methods: ["POST", "GET", "DELETE", "UPDATE", "PUT", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 const port = 3000;
