@@ -16,10 +16,10 @@ app.use(
 );
 const port = 3000;
 
-await connectDB();
+connectDB();
 
 app.get("/", function (req, res) {
-  res.send("Hello World ");
+  res.send("Hello World akash");
 });
 app.use("/api", apiRouter);
 app.all("/*", (req, res) => {
