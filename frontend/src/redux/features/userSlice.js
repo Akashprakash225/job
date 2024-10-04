@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  isUserExist: false,
-  user: {},
+  isAuthenticated: false,
+  user: null,
+  error: null,
 };
 
 export const userSlice = createSlice({
@@ -10,17 +11,24 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     saveUser: (state, action) => {
-      state.isUserExist = true;
+      console.log("Saving user:", action.payload); // Debugging
+      state.isAuthenticated = true;
       state.user = action.payload;
+      state.error = null;
     },
     clearUser: (state) => {
-      state.isUserExist = false;
-      state.user = {};
+      console.log("Clearing user"); // Debugging
+      state.isAuthenticated = false;
+      state.user = null;
+      state.error = null;
+    },
+    setError: (state, action) => {
+      console.log("Setting error:", action.payload); // Debugging
+      state.error = action.payload;
     },
   },
 });
 
-// Action creators are generated for each case reducer function
-export const { saveUser, clearUser } = userSlice.actions;
+export const { saveUser, clearUser, setError } = userSlice.actions;
 
 export default userSlice.reducer;
