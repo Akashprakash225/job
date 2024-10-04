@@ -120,7 +120,9 @@ const checkUser = async (req, res) => {
   try {
     const { user } = req;
     if (!user) {
-      res.status(401).json({ success: false, message: "user  autherized" });
+      return res
+        .status(401)
+        .json({ success: false, message: "user  autherized" });
     }
 
     res.status(200).json({ success: true, message: "User data fetched" });
