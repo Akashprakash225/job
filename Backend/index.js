@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ["http://localhost:3459", "https://job-frontend-two.vercel.app"],
+    origin: ["http://localhost:3459", "https://job-taupe.vercel.app"],
     credentials: true,
     methods: ["POST", "GET", "DELETE", "UPDATE", "PUT", "OPTIONS"],
   })
