@@ -116,9 +116,8 @@ const checkEmployer = async (req, res) => {
     if (!user) {
       return res
         .status(401)
-        .json({ success: false, message: "Employer  autherized" });
+        .json({ success: false, message: "Employer unauthorized" });
     }
-
     res.status(200).json({ success: true, message: "Employer data fetched" });
   } catch (error) {
     console.log(error);
