@@ -42,9 +42,9 @@ const userSignup = async (req, res) => {
 
     const token = generateToken(newUser._id);
     res.cookie("token", token, {
-      sameSite: "none",
-      secure: true,
       httpOnly: true,
+      secure: true,
+      sameSite: "None",
     });
     res.json({ success: true, message: "User created successfully" });
   } catch (error) {
@@ -73,9 +73,9 @@ const userLogin = async (req, res, next) => {
     }
     const token = generateToken(userExist._id);
     res.cookie("token", token, {
-      sameSite: "none",
-      secure: true,
       httpOnly: true,
+      secure: true,
+      sameSite: "None",
     });
     res.json({ success: true, message: "User logined successfully" });
   } catch (error) {
@@ -89,9 +89,9 @@ const userLogin = async (req, res, next) => {
 const userLogout = async (req, res) => {
   try {
     res.clearCookie("token", {
-      sameSite: "none",
-      secure: true,
       httpOnly: true,
+      secure: true,
+      sameSite: "None",
     });
     res.json({ message: "User Logout Successfull", success: true });
   } catch (error) {

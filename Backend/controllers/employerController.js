@@ -45,7 +45,11 @@ const employerSignup = async (req, res) => {
     await newEmployer.save();
 
     const token = generateToken(newEmployer._id, "employer");
-    res.cookie("token", token);
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+    });
     res.json({ success: true, message: "Employer created successfully" });
   } catch (error) {
     console.log(error);
@@ -72,7 +76,11 @@ const employerLogin = async (req, res, next) => {
       return res.status(401).json({ message: "Employer not autherized" });
     }
     const token = generateToken(employerExist._id, "employer");
-    res.cookie("token", token);
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+    });
     res.json({ success: true, message: "Employer logined successfully" });
   } catch (error) {
     console.log(error);
@@ -84,7 +92,11 @@ const employerLogin = async (req, res, next) => {
 
 const employerLogout = async (req, res) => {
   try {
-    res.clearCookie("token");
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+    });
     res.json({ message: "Employer Logout Successfull", success: true });
   } catch (error) {
     console.log(error);
