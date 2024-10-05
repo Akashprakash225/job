@@ -5,6 +5,7 @@ const {
   deleteJob,
   JobList,
   JobDetails,
+  searchJobsByTitle,
 } = require("../../controllers/jobcontrollers");
 const { upload } = require("../../middlewares/multer");
 const router = express.Router();
@@ -20,5 +21,6 @@ router.put(
 );
 router.delete("/delete/:jobId", employerAuth, deleteJob);
 router.get("/jobList", JobList);
+router.get("/search", searchJobsByTitle);
 
 module.exports = { jobsRouter: router };

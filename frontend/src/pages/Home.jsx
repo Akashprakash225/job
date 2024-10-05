@@ -18,6 +18,10 @@ const Home = () => {
       console.log(error);
     }
   };
+  const handleSearchResults = (searchData) => {
+    setData(searchData);
+  };
+
   useEffect(() => {
     fetchJob();
   }, []);
@@ -30,7 +34,7 @@ const Home = () => {
           </h1>
         </div>
         <div className="mb-5">
-          <Search />
+          <Search onSearch={handleSearchResults} />
         </div>
         <div className="grid grid-cols-3">
           {data.map((value) => (

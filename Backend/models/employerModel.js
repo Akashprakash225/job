@@ -27,7 +27,7 @@ const employerSchema = new mongoose.Schema({
     {
       jobId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Employer",
+        ref: "Job",
       },
       postedDate: {
         type: Date,

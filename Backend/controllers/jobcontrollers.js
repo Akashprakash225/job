@@ -149,4 +149,32 @@ const JobDetails = async (req, res, next) => {
     return next(error);
   }
 };
-module.exports = { createJob, updateJob, deleteJob, JobList, JobDetails };
+
+const searchJobsByTitle = async (req, res, next) => {
+  const { title } = req.query;
+
+  try {
+    const jobs = await Job.find({
+      title: { $regex: title, $options: "i" },
+    });
+
+    if (!jobs.length) {
+      return res.status(404).json({ message: "No jobs found with that title" });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: jobs,
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+module.exports = {
+  createJob,
+  updateJob,
+  deleteJob,
+  JobList,
+  JobDetails,
+  searchJobsByTitle,
+};

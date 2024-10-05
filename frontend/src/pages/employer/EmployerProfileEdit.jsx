@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { axiosInstance } from "../../config/AxiosInstances"; // Axios config file
+import { axiosInstance } from "../../config/AxiosInstances";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
@@ -17,7 +17,7 @@ export const EmployerProfileEdit = () => {
 
   const fetchEmployerProfile = async () => {
     try {
-      const response = await axiosInstance.get("/employer/profile"); // Adjust endpoint accordingly
+      const response = await axiosInstance.get("/employer/profile");
       const employerData = response?.data?.data;
       setEmployer({
         companyName: employerData.companyName || "",

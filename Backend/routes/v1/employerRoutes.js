@@ -8,6 +8,7 @@ const {
   employerUpdate,
   checkEmployer,
   companyList,
+  getEmployerJobs,
 } = require("../../controllers/employerController");
 const { employerAuth } = require("../../middlewares/employerAuth");
 const router = express.Router();
@@ -31,5 +32,6 @@ router.delete("/delete");
 router.get("/userList");
 router.get("/check-employer", employerAuth, checkEmployer);
 router.get("/companyList", companyList);
+router.get("/jobs", employerAuth, getEmployerJobs);
 
 module.exports = { employerRouter: router };

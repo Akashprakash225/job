@@ -17,7 +17,7 @@ export const EmployerSignup = () => {
       });
       console.log(response, "======response");
       toast.success("Signup Success");
-      navigate("/login");
+      navigate("employer/login");
     } catch (error) {
       toast.error("Signup Failed");
       console.log(error);

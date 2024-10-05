@@ -201,6 +201,33 @@ const companyList = async (req, res, next) => {
     return next(error);
   }
 };
+const getEmployerJobs = async (req, res) => {
+  try {
+    console.log("Authenticated User:", req.user);
+    const employerId = req.user.id;
+
+    if (!mongoose.Types.ObjectId.isValid(employerId)) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid employer ID" });
+    }
+
+    const jobs = await Job.find({ employer: employerId })
+      .populate("employer", "companyName companyLogo companyWebsite")
+      .sort({ postedDate: -1 });
+
+    res.status(200).json({
+      success: true,
+      data: jobs,
+    });
+  } catch (error) {
+    console.error("Error fetching employer's jobs:", {
+      message: error.message,
+      stack: error.stack,
+    });
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
 
 module.exports = {
   employerSignup,
@@ -210,4 +237,5 @@ module.exports = {
   checkEmployer,
   employerUpdate,
   companyList,
+  getEmployerJobs,
 };

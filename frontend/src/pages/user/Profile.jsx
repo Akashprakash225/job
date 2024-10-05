@@ -59,7 +59,6 @@ export const Profile = () => {
         <h1 className="text-lg text-gray-600 mb-2">{user?.phone}</h1>
         <h1 className="text-lg text-blue-600 mb-4">{user?.resume}</h1>
 
-        {/* Display profile picture */}
         {user?.profilePic ? (
           <img
             src={user.profilePic}

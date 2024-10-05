@@ -18,6 +18,8 @@ import AuthEmployer from "./protectedRoutes/AuthEmployer";
 import { EmployerSignup } from "../pages/employer/EmployerSignup";
 import { UserProfileEdit } from "../pages/user/UserProfileEdit";
 import Home from "../pages/Home";
+import { EmployerProfileEdit } from "../pages/employer/EmployerProfileEdit";
+import Search from "../components/Search";
 
 export const router = createBrowserRouter([
   {
@@ -30,8 +32,8 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "about",
-        element: <About />,
+        path: "search",
+        element: <Search />,
       },
       {
         path: "job",
@@ -102,6 +104,10 @@ export const router = createBrowserRouter([
           {
             path: "new-job",
             element: <EmployersNewJob />,
+          },
+          {
+            path: "edit",
+            element: <EmployerProfileEdit />,
           },
         ],
       },
