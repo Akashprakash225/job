@@ -17,7 +17,7 @@ export const EmployerSignup = () => {
       });
       console.log(response, "======response");
       toast.success("Signup Success");
-      navigate("/login");
+      navigate("/employer/login");
     } catch (error) {
       toast.error("Signup Failed");
       console.log(error);
@@ -102,7 +102,7 @@ export const EmployerSignup = () => {
             </div>
 
             <label className="label">
-              <Link to={"/login"}>Existing User?</Link>
+              <Link to={"/employer/login"}>Existing User?</Link>
             </label>
             <div className="form-control mt-6">
               <button className="btn btn-primary">Signup</button>

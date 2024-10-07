@@ -1,7 +1,10 @@
-const { employer, Employer } = require("../models/employerModel");
+const mongoose = require("mongoose");
+const { Employer } = require("../models/employerModel");
+const { Job } = require("../models/jobModels");
 const bcrypt = require("bcrypt");
 const { generateToken } = require("../utils/token");
 const { handleImageUpload } = require("../utils/imageUpload");
+
 const employerSignup = async (req, res) => {
   try {
     const {
@@ -15,7 +18,7 @@ const employerSignup = async (req, res) => {
       location,
       description,
     } = req.body;
-    let companyLogoUrl = null;
+
     if (!companyName || !email || !password || !phone) {
       return res
         .status(400)
@@ -23,15 +26,16 @@ const employerSignup = async (req, res) => {
     }
     const isEmployerExist = await Employer.findOne({ email });
     if (isEmployerExist) {
-      return res.status(400).json({ message: "Employer Already exist" });
+      return res.status(400).json({ message: "Employer Already exists" });
     }
     const saltRounds = 10;
     const hashedPassword = bcrypt.hashSync(password, saltRounds);
-    if (req.files) {
-      if (req.files.companyLogo) {
-        companyLogoUrl = await handleImageUpload(req.files.companyLogo[0].path);
-      }
+
+    let companyLogoUrl = null;
+    if (req.files && req.files.companyLogo) {
+      companyLogoUrl = await handleImageUpload(req.files.companyLogo[0].path);
     }
+
     const newEmployer = new Employer({
       companyName,
       email,
@@ -41,7 +45,9 @@ const employerSignup = async (req, res) => {
       location,
       description,
       companyWebsite,
+      jobsPosted: [],
     });
+
     await newEmployer.save();
 
     const token = generateToken(newEmployer._id, "employer");
@@ -50,43 +56,52 @@ const employerSignup = async (req, res) => {
       secure: true,
       sameSite: "None",
     });
-    res.json({ success: true, message: "Employer created successfully" });
-  } catch (error) {
-    console.log(error);
+
     res
-      .status(error.statusCode || 500)
-      .json({ message: error.message || "Internal server error" });
+      .status(201)
+      .json({ success: true, message: "Employer created successfully" });
+  } catch (error) {
+    console.error("Error during employer signup:", error);
+    res.status(error.statusCode || 500).json({
+      success: false,
+      message: error.message || "Internal server error",
+    });
   }
 };
 
-const employerLogin = async (req, res, next) => {
+const employerLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
+
     if (!email || !password) {
       return res.status(400).json({ message: "All Fields Required" });
     }
+
     const employerExist = await Employer.findOne({ email });
     if (!employerExist) {
       return res
         .status(404)
-        .json({ success: false, message: "employer dosnot exist" });
+        .json({ success: false, message: "Employer does not exist" });
     }
     const passwordMatch = bcrypt.compareSync(password, employerExist.password);
     if (!passwordMatch) {
-      return res.status(401).json({ message: "Employer not autherized" });
+      return res.status(401).json({ message: "Incorrect password" });
     }
+
     const token = generateToken(employerExist._id, "employer");
     res.cookie("token", token, {
       httpOnly: true,
       secure: true,
       sameSite: "None",
     });
-    res.json({ success: true, message: "Employer logined successfully" });
+
+    res.json({ success: true, message: "Employer logged in successfully" });
   } catch (error) {
-    console.log(error);
-    return res
-      .status(error.statusCode || 500)
-      .json({ message: error.message || "Internal server error" });
+    console.error("Error during employer login:", error);
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      message: error.message || "Internal server error",
+    });
   }
 };
 
@@ -97,31 +112,43 @@ const employerLogout = async (req, res) => {
       secure: true,
       sameSite: "None",
     });
-    res.json({ message: "Employer Logout Successfull", success: true });
+    res.json({ message: "Employer logged out successfully", success: true });
   } catch (error) {
-    console.log(error);
-    return res
-      .status(error.statusCode || 500)
-      .json({ message: error.message || "Internal server error" });
+    console.error("Error during employer logout:", error);
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      message: error.message || "Internal server error",
+    });
   }
 };
-const employerProfile = async (req, res, next) => {
+
+const employerProfile = async (req, res) => {
   try {
     const employer = req.user;
 
-    const employerData = await Employer.findOne({ _id: employer.id });
+    const employerData = await Employer.findById(employer.id).select(
+      "-password"
+    );
+    if (!employerData) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Employer not found" });
+    }
+
     res.status(200).json({
       success: true,
       message: "Employer data fetched",
       data: employerData,
     });
   } catch (error) {
-    console.log(error);
-    return res
-      .status(error.statusCode || 500)
-      .json({ message: error.message || "Internal server error" });
+    console.error("Error fetching employer profile:", error);
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      message: error.message || "Internal server error",
+    });
   }
 };
+
 const checkEmployer = async (req, res) => {
   try {
     const { user } = req;
@@ -130,15 +157,17 @@ const checkEmployer = async (req, res) => {
         .status(401)
         .json({ success: false, message: "Employer unauthorized" });
     }
-    res.status(200).json({ success: true, message: "Employer data fetched" });
+    res.status(200).json({ success: true, message: "Employer authorized" });
   } catch (error) {
-    console.log(error);
-    return res
-      .status(error.statusCode || 500)
-      .json({ message: error.message || "Internal server error" });
+    console.error("Error checking employer authorization:", error);
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      message: error.message || "Internal server error",
+    });
   }
 };
-const employerUpdate = async (req, res, next) => {
+
+const employerUpdate = async (req, res) => {
   try {
     const { id: employerId } = req.user;
     const { companyName, email, phone, companyWebsite, location, description } =
@@ -152,7 +181,6 @@ const employerUpdate = async (req, res, next) => {
     }
 
     const employer = await Employer.findById(employerId);
-
     if (!employer) {
       return res
         .status(404)
@@ -172,35 +200,46 @@ const employerUpdate = async (req, res, next) => {
     }
 
     await employer.save();
+
     res.status(200).json({
       success: true,
       message: "Employer updated successfully",
       data: employer,
     });
   } catch (error) {
-    console.error(error);
-    return res
-      .status(error.statusCode || 500)
-      .json({ message: error.message || "Internal server error" });
+    console.error("Error updating employer profile:", error);
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      message: error.message || "Internal server error",
+    });
   }
 };
-const companyList = async (req, res, next) => {
+
+const companyList = async (req, res) => {
   try {
-    const employer = await Employer.find().populate(
+    const employers = await Employer.find().populate(
       "jobsPosted.jobId",
-      "companyName"
+      "title companyName"
     );
-    if (!employer.length) {
-      return res.status(404).json({ message: "No jobs found" });
+
+    if (!employers.length) {
+      return res
+        .status(404)
+        .json({ success: false, message: "No employers found" });
     }
-    return res.status(200).json({
+
+    res.status(200).json({
       success: true,
-      data: employer,
+      data: employers,
     });
   } catch (error) {
-    return next(error);
+    console.error("Error fetching company list:", error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal server error" });
   }
 };
+
 const getEmployerJobs = async (req, res) => {
   try {
     console.log("Authenticated User:", req.user);

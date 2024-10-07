@@ -29,7 +29,6 @@ const JobCards = ({ job }) => {
     </div>
   );
 };
-
 export default JobCards;
 
 export const SavedCards = ({ items, refreshSavedJobs }) => {
@@ -84,6 +83,38 @@ export const CompanyCards = ({ employer }) => {
 
           <div className="card-actions justify-end">
             <button className="btn btn-primary">More Details</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+export const EmployerJobCard = ({ job, onDelete }) => {
+  const handleDelete = () => {
+    onDelete(job._id);
+  };
+
+  return (
+    <div className="py-6 pl-12">
+      <div className="card card-compact bg-base-100 w-80 shadow-xl">
+        <figure>
+          {job.jobImage && (
+            <img
+              src={job.jobImage}
+              alt={`${job.title} logo`}
+              className="w-full h-36 object-cover"
+            />
+          )}
+        </figure>
+        <div className="card-body">
+          <h2 className="card-title">{job.title}</h2>
+          <p>{job.companyName}</p>
+          <p>{job.requirements.join(", ")}</p>{" "}
+          <div className="card-actions justify-end">
+            <button onClick={handleDelete} className="btn btn-red ml-2">
+              {" "}
+              Delete Job
+            </button>
           </div>
         </div>
       </div>
