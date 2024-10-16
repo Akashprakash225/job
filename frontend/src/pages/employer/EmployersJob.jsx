@@ -45,7 +45,7 @@ export const EmployersJob = () => {
       {loading && <p>Loading jobs...</p>}
       {error && <p className="text-red-500">{error}</p>}
       {Array.isArray(jobs) && jobs.length > 0 ? (
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {jobs.map((job) => (
             <EmployerJobCard key={job._id} job={job} onDelete={handleDelete} />
           ))}

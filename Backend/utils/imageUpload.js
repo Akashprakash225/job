@@ -3,7 +3,7 @@ const { cloudinaryInstance } = require("../config/cloudinaryConfig");
 const handleImageUpload = async (path, chunk_size = null) => {
   try {
     const options = {
-      resource_type: "raw",
+      resource_type: "auto",
     };
 
     if (chunk_size) {

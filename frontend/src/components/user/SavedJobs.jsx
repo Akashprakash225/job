@@ -51,11 +51,11 @@ export const SavedJobs = () => {
   }
 
   if (error) {
-    return <p>Error: {error}</p>;
+    return <p> {error}</p>;
   }
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 pb-40">
       <h2 className="text-3xl font-bold mb-6">My Saved Jobs</h2>
       {savedItems.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

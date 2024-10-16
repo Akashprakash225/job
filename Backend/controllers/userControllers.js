@@ -174,6 +174,7 @@ const userUpdate = async (req, res, next) => {
       .json({ message: error.message || "Internal server error" });
   }
 };
+
 module.exports = {
   userSignup,
   userLogin,

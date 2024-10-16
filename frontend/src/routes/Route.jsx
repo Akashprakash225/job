@@ -20,6 +20,8 @@ import { UserProfileEdit } from "../pages/user/UserProfileEdit";
 import Home from "../pages/Home";
 import { EmployerProfileEdit } from "../pages/employer/EmployerProfileEdit";
 import Search from "../components/Search";
+import AppliedJobs from "../pages/user/AppliedJobs";
+import { JobMoreDetails } from "../components/employer/JobMoreDetails";
 
 export const router = createBrowserRouter([
   {
@@ -69,6 +71,10 @@ export const router = createBrowserRouter([
             element: <SavedJobs />,
           },
           {
+            path: "applied-jobs",
+            element: <AppliedJobs />,
+          },
+          {
             path: "edit",
             element: <UserProfileEdit />,
           },
@@ -108,6 +114,10 @@ export const router = createBrowserRouter([
           {
             path: "edit",
             element: <EmployerProfileEdit />,
+          },
+          {
+            path: "more-details/:jobId",
+            element: <JobMoreDetails />,
           },
         ],
       },

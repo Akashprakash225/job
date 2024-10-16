@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { axiosInstance } from "../../config/AxiosInstances";
+import toast from "react-hot-toast";
 
 export function EmployersNewJob() {
   const [image, setImage] = useState({ preview: "", data: "" });
@@ -40,6 +41,7 @@ export function EmployersNewJob() {
       if (response) {
         setStatus(response.statusText);
         setError(null);
+        toast.success("Job Posted Successfully");
 
         setData({
           title: "",
@@ -55,6 +57,7 @@ export function EmployersNewJob() {
         setImage({ preview: "", data: "" });
       }
     } catch (err) {
+      toast.error("Failed To Post Job");
       setError("Something went wrong. Please try again.");
     }
   };

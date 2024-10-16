@@ -72,7 +72,7 @@ export const EmployerProfileEdit = () => {
   return (
     <form
       onSubmit={handleUpdate}
-      className="max-w-md mx-auto p-6 bg-white shadow-lg rounded-lg"
+      className="max-w-md mx-auto p-6 mr-20 bg-white shadow-lg rounded-lg"
     >
       <h1 className="text-2xl font-bold mb-4">Edit Employer Profile</h1>
       <input

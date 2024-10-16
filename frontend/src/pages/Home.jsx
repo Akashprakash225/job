@@ -29,14 +29,14 @@ const Home = () => {
     <div className="">
       <main className="min-h-96">
         <div className="flex justify-center items-center">
-          <h1 className="text-4xl py-8 font-bold">
+          <h1 className="text-4xl py-8 font-bold ml-5 mr-2">
             Discover your perfect career today
           </h1>
         </div>
-        <div className="mb-5">
+        <div className="mb-5 ml-5 mr-5">
           <Search onSearch={handleSearchResults} />
         </div>
-        <div className="grid grid-cols-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {data.map((value) => (
             <JobCards job={value} key={value?._id} />
           ))}

@@ -80,9 +80,61 @@ const getApplicationById = async (req, res) => {
     res.status(500).json({ message: "Error fetching application", error });
   }
 };
+const deleteApplication = async (req, res) => {
+  try {
+    const { applicationId } = req.params;
+    const application = await Application.findByIdAndDelete(applicationId);
 
+    if (!application) {
+      return res.status(404).json({ message: "Application not found" });
+    }
+
+    res.status(200).json({ success: true, message: "Application deleted" });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error deleting application",
+      error: error.message,
+    });
+  }
+};
+const getApplicantsByJobId = async (req, res) => {
+  try {
+    const { jobId } = req.params;
+
+    const job = await Job.findById(jobId);
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    const applications = await Application.find({ jobId }).populate(
+      "userId",
+      "name resume"
+    );
+
+    const applicants = applications.map((application) => ({
+      name: application.userId.name,
+      resumeUrl: application.resume,
+    }));
+
+    res.status(200).json({
+      success: true,
+      applicants,
+      totalApplicants: applicants.length,
+    });
+  } catch (error) {
+    console.error("Error fetching applicants:", error);
+    res.status(500).json({
+      message: "Error fetching applicants",
+      success: false,
+      error: error.message,
+    });
+  }
+};
 module.exports = {
   applyForJob,
   getUserApplications,
   getApplicationById,
+  deleteApplication,
+  getApplicantsByJobId,
 };

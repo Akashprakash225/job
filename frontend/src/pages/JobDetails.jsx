@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { axiosInstance } from "../config/AxiosInstances";
 import toast from "react-hot-toast";
 
@@ -7,6 +7,7 @@ const JobDetails = () => {
   const [jobDetails, setJobDetails] = useState({});
   const [resumeFile, setResumeFile] = useState(null);
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const fetchJobDetails = async () => {
     try {
@@ -40,7 +41,6 @@ const JobDetails = () => {
 
     const formData = new FormData();
     formData.append("resume", resumeFile);
-    // Note: The jobId is passed via the URL parameter, so no need to include it in formData
 
     try {
       const response = await axiosInstance.post(
@@ -54,6 +54,7 @@ const JobDetails = () => {
       );
       console.log(response);
       toast.success("Application submitted successfully!");
+      navigate("/job");
     } catch (error) {
       console.error("Error applying for the job:", error);
       toast.error(
@@ -64,14 +65,12 @@ const JobDetails = () => {
 
   useEffect(() => {
     fetchJobDetails();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]); // Re-fetch if the job ID changes
+  }, [id]);
 
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-4xl font-bold mb-6">Job Details</h1>
       <div className="flex flex-col md:flex-row w-full">
-        {/* Job Image Section */}
         <div className="md:w-5/12 mb-6 md:mb-0">
           {jobDetails.jobImage ? (
             <img
@@ -86,7 +85,6 @@ const JobDetails = () => {
           )}
         </div>
 
-        {/* Job Details Section */}
         <div className="md:w-7/12 md:ml-8">
           <h2 className="text-3xl font-semibold mb-2">{jobDetails.title}</h2>
           <p className="text-xl text-gray-700 mb-4">{jobDetails.company}</p>
@@ -120,7 +118,6 @@ const JobDetails = () => {
             <p className="mt-2">{jobDetails.description}</p>
           </div>
 
-          {/* Resume Upload */}
           <div className="mb-6">
             <label
               htmlFor="resume"
@@ -142,7 +139,6 @@ const JobDetails = () => {
             )}
           </div>
 
-          {/* Action Buttons */}
           <div className="flex gap-4">
             <button
               className="btn btn-outline px-4 py-2 rounded"

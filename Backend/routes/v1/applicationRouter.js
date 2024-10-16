@@ -3,6 +3,8 @@ const {
   applyForJob,
   getUserApplications,
   getApplicationById,
+  deleteApplication,
+  getApplicantsByJobId,
 } = require("../../controllers/applicationController");
 const { userAuth } = require("../../middlewares/userAuth");
 const { upload } = require("../../middlewares/multer");
@@ -17,6 +19,8 @@ router.post(
 );
 
 router.get("/applications", userAuth, getUserApplications);
+router.delete("/applications/:applicationId", userAuth, deleteApplication);
 
 router.get("/applications/:applicationId", userAuth, getApplicationById);
+router.get("/application/:jobId/applicants", userAuth, getApplicantsByJobId);
 module.exports = { applicationRouter: router };

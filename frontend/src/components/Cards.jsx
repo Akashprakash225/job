@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 
 const JobCards = ({ job }) => {
   return (
-    <div className="py-6 pl-12">
+    <div className="py-6 pl-5">
       <div className="card card-compact bg-base-100 w-80 shadow-xl  ">
         <figure>
           <img
@@ -44,19 +44,22 @@ export const SavedCards = ({ items, refreshSavedJobs }) => {
   };
 
   return (
-    <div className="flex w-full h-40 items-center gap-20 mb-10">
+    <div className="flex flex-col md:flex-row w-full h-40 items-center gap-6 mb-10 ">
       <img
         src={items.jobImage}
         alt="image"
-        className="w-full h-40 object-cover"
+        className="w-full h-40 object-cover md:w-1/3"
       />
-      <div>
-        <h2>{items.title}</h2>
-        <h3>
+      <div className="flex-1">
+        <h2 className="text-lg font-semibold">{items.title}</h2>
+        <h3 className="text-md">
           {items.company} - {items.location}
         </h3>
       </div>
-      <button className="btn btn-secondary" onClick={handleRemoveJob}>
+      <button
+        className="btn btn-secondary mt-4 md:mt-0"
+        onClick={handleRemoveJob}
+      >
         Remove
       </button>
     </div>
@@ -66,7 +69,7 @@ export const CompanyCards = ({ employer }) => {
   if (!employer) return null;
 
   return (
-    <div className="py-6 pl-12">
+    <div className="py-6 pl-6">
       <div className="card card-compact bg-base-100 w-80 shadow-xl  ">
         <figure>
           <img
@@ -95,8 +98,8 @@ export const EmployerJobCard = ({ job, onDelete }) => {
   };
 
   return (
-    <div className="py-6 pl-12">
-      <div className="card card-compact bg-base-100 w-80 shadow-xl">
+    <div className="py-6 pl-2">
+      <div className="bg-base-100 w-80 shadow-xl">
         <figure>
           {job.jobImage && (
             <img
@@ -109,10 +112,17 @@ export const EmployerJobCard = ({ job, onDelete }) => {
         <div className="card-body">
           <h2 className="card-title">{job.title}</h2>
           <p>{job.companyName}</p>
-          <p>{job.requirements.join(", ")}</p>{" "}
-          <div className="card-actions justify-end">
-            <button onClick={handleDelete} className="btn btn-red ml-2">
-              {" "}
+          <p>{job.requirements.join(", ")}</p>
+          <div className="card-actions flex justify-between">
+            <Link to={`/employer/more-details/${job._id}`}>
+              <button className="btn bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                More Details
+              </button>
+            </Link>
+            <button
+              onClick={handleDelete}
+              className="btn ml-2 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
+            >
               Delete Job
             </button>
           </div>

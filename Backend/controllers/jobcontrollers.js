@@ -30,10 +30,6 @@ const createJob = async (req, res, next) => {
     ) {
       return res.status(400).json({ message: "All fields required" });
     }
-    // const isJobExist = await Job.findOne({ title });
-    // if (isJobExist) {
-    //   return res.status(400).json({ message: "Job already exist" });
-    // }
     if (req.file) {
       jobImageUrl = await handleImageUpload(req.file.path);
     }

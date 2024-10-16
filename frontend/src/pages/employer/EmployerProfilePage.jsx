@@ -32,7 +32,7 @@ export const EmployerProfilePage = () => {
   };
 
   const handleEditProfile = () => {
-    navigate("/employer/edit"); // Navigate to the Edit Employer Profile page
+    navigate("/employer/edit");
   };
 
   useEffect(() => {
@@ -40,8 +40,8 @@ export const EmployerProfilePage = () => {
   }, []);
 
   return (
-    <div className="flex justify-between items-start w-full h-screen p-8">
-      <div className="p-6 text-left">
+    <div className="flex justify-between items-start w-full  p-2">
+      <div className="left-0 p-6 text-left">
         <h1 className="text-2xl font-bold">
           Welcome, {employer?.companyName}!
         </h1>
@@ -50,17 +50,25 @@ export const EmployerProfilePage = () => {
         </p>
       </div>
 
-      <div className="w-1/3 max-w-md bg-base-100 shadow-lg rounded-lg p-6 text-center ml-auto">
+      <div className="max-w-md ml-auto bg-white shadow-lg rounded-lg p-6 text-center">
         <h1 className="text-lg font-semibold text-gray-800 mb-2">
           {employer?.companyName}
         </h1>
         <h1 className="text-lg text-gray-600 mb-2">{employer?.email}</h1>
         <h1 className="text-lg text-gray-600 mb-2">{employer?.phone}</h1>
-        <img
-          src={employer?.companyLogo}
-          alt="profile picture"
-          className="w-32 h-32 rounded-full object-cover mx-auto mb-4 border-2 border-gray-200"
-        />
+
+        {employer?.companyLogo ? (
+          <img
+            src={employer.companyLogo}
+            alt="Profile"
+            className="w-32 h-32 rounded-full object-cover mx-auto mb-4 border-2 border-gray-200"
+          />
+        ) : (
+          <div className="w-32 h-32 rounded-full bg-gray-300 mx-auto mb-4 border-2 border-gray-200 flex items-center justify-center">
+            <span className="text-gray-500">No Image</span>
+          </div>
+        )}
+
         <button
           onClick={handleEditProfile}
           className="btn btn-outline border border-blue-500 text-blue-500 py-2 px-4 rounded hover:bg-blue-500 hover:text-white transition"
