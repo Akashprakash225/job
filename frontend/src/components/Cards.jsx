@@ -83,10 +83,6 @@ export const CompanyCards = ({ employer }) => {
             {employer.companyName || "Unknown Company"}
           </h2>
           <p>{employer.companyWebsite || "No website available"}</p>
-
-          <div className="card-actions justify-end">
-            <button className="btn btn-primary">More Details</button>
-          </div>
         </div>
       </div>
     </div>
