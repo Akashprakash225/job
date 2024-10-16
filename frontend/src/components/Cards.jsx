@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 
 const JobCards = ({ job }) => {
   return (
-    <div className="py-6 pl-5">
+    <div className="py-6 pl-8">
       <div className="card card-compact bg-base-100 w-80 shadow-xl  ">
         <figure>
           <img
